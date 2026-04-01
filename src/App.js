@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 // Layout Components
 import Navbar from "./components/Layout/Navbar";
@@ -16,6 +17,10 @@ import Volunteer from "./pages/Volunteer";
 import News from "./pages/News";
 import Contact from "./pages/Contact";
 import AdminDashboard from "./pages/Admin/Dashboard";
+
+// Configure axios base URL
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+axios.defaults.baseURL = API_URL;
 
 function App() {
   return (
