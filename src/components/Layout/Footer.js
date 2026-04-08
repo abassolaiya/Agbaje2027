@@ -10,10 +10,10 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About Section */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Barr. Akeem Agbaje</h3>
+            <h3 className="text-xl font-bold mb-4">Adehun 2027</h3>
             <p className="text-gray-400 mb-4">
-              A leader with integrity, vision, and a proven commitment to the
-              people of Oyo State. Your next Governor, Oyo State 2027.
+              Building a people-first future through inclusive governance,
+              loyalty, and purposeful leadership.
             </p>
             <div className="flex space-x-4">
               <a

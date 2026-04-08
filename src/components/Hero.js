@@ -9,17 +9,15 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 text-center text-white px-4 max-w-5xl mx-auto">
-        <h1 className="text-5xl md:text-7xl font-bold mb-6">
-          Barr. Akeem Adedeji Agbaje
-        </h1>
+        <h1 className="text-5xl md:text-7xl font-bold mb-6">ADEHUN</h1>
 
         <h2 className="text-2xl md:text-3xl mb-4 text-yellow-400">
-          Your Next Governor, Oyo State 2027
+          A Movement for Justice, Unity, and Responsible Leadership
         </h2>
 
         <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-          A leader with integrity, vision, and a proven commitment to the people
-          of Oyo State
+          Building a people-first future through inclusive governance, loyalty,
+          and purposeful leadership.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

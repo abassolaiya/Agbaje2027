@@ -43,12 +43,12 @@ const Navbar = () => {
               <h1
                 className={`font-bold text-lg ${scrolled ? "text-green-800" : "text-white"}`}
               >
-                Barr. Akeem Agbaje
+                Adehun
               </h1>
               <p
                 className={`text-xs ${scrolled ? "text-gray-600" : "text-green-200"}`}
               >
-                The People's Choice 2027
+                Koniye!!!
               </p>
             </div>
           </Link>

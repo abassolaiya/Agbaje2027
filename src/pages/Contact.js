@@ -37,17 +37,17 @@ const Contact = () => {
     {
       icon: <FaPhone className="text-2xl text-green-700" />,
       title: "Phone",
-      details: ["+234 802 345 6789", "+234 803 456 7890"],
+      details: ["+234 916 061 0199", "+234 803 657 8256"],
     },
     {
       icon: <FaEnvelope className="text-2xl text-green-700" />,
       title: "Email",
-      details: ["info@akeemagbaje.com", "volunteer@akeemagbaje.com"],
+      details: ["info@akeemagbaje.com", "agbajeadehun27@gmail.com"],
     },
     {
       icon: <FaMapMarkerAlt className="text-2xl text-green-700" />,
       title: "Campaign Office",
-      details: ["23, Agodi GRA, Ibadan", "Oyo State, Nigeria"],
+      details: ["Adehun Building, Bodija, Ibadan", "Oyo State, Nigeria"],
     },
     {
       icon: <FaClock className="text-2xl text-green-700" />,

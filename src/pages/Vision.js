@@ -13,75 +13,57 @@ const Vision = () => {
   const pillars = [
     {
       icon: <FaGraduationCap className="text-4xl text-green-700" />,
-      title: "Quality Education",
+      title: "Purpose-Driven and Godly Leadership",
       description:
-        "Revolutionize education with modern infrastructure, qualified teachers, and digital learning tools. Ensure every child has access to quality education.",
-      goals: [
-        "Build 100 new model schools",
-        "Train 5,000 teachers annually",
-        "Provide free laptops to students",
-        "Establish technical colleges",
-      ],
+        "We champion leadership that is accountable not only to the people but also guided by strong moral and Godly principles—ensuring decisions are made with integrity, fairness, and a genuine heart for service.",
     },
     {
       icon: <FaHospitalUser className="text-4xl text-green-700" />,
-      title: "Healthcare for All",
+      title: "A Truly People-Centered Movement",
       description:
-        "Transform healthcare delivery with modern facilities, affordable services, and comprehensive health insurance for all residents.",
-      goals: [
-        "Upgrade all primary health centers",
-        "Build 5 new general hospitals",
-        "Implement universal health coverage",
-        "Recruit 1,000 medical professionals",
-      ],
+        "Our strength lies in the people. We are committed to building a system where policies, decisions, and actions are shaped by the real needs, voices, and aspirations of the grassroots.",
     },
     {
       icon: <FaChartLine className="text-4xl text-green-700" />,
-      title: "Economic Growth",
+      title: "⁠Inclusive Opportunities for All",
       description:
-        "Create an enabling environment for businesses, attract investments, and generate employment opportunities for our youth.",
-      goals: [
-        "Establish industrial parks",
-        "Support small businesses",
-        "Create 50,000 jobs annually",
-        "Develop agricultural value chains",
-      ],
+        "We promote a system that creates fair opportunities for participation and growth, ensuring that no individual or group is excluded from contributing to collective progress.",
     },
     {
       icon: <FaHandsHelping className="text-4xl text-green-700" />,
-      title: "Social Welfare",
+      title: "Strengthening Internal Cohesion",
       description:
-        "Implement comprehensive social protection programs to support the vulnerable and elderly in our society.",
-      goals: [
-        "Monthly stipends for elderly",
-        "Skill acquisition programs",
-        "Food security initiative",
-        "Housing for the poor",
-      ],
+        "We will build a united and disciplined structure anchored on trust, respect, and continuous engagement—eliminating divisions that weaken progress.",
     },
     {
       icon: <FaLeaf className="text-4xl text-green-700" />,
-      title: "Agriculture & Food Security",
+      title: "Merit Based Advancement",
       description:
-        "Modernize agriculture, support farmers, and ensure food sufficiency while creating export opportunities.",
-      goals: [
-        "Irrigate 10,000 hectares",
-        "Provide subsidized inputs",
-        "Establish processing zones",
-        "Youth in agriculture program",
-      ],
+        "We advocate for a culture where responsibility and leadership roles are earned through competence, proven capacity, and commitment to service",
     },
     {
       icon: <FaBriefcase className="text-4xl text-green-700" />,
-      title: "Infrastructure",
+      title: "Accessible, Listening, and Responsive Leadership",
       description:
-        "Build and maintain critical infrastructure to support economic growth and improve quality of life.",
-      goals: [
-        "Construct 500km of roads",
-        "Improve power supply",
-        "Provide clean water",
-        "Develop rural infrastructure",
-      ],
+        "Leadership must remain close to the people—open, approachable, and willing to listen. We will ensure continuous engagement and timely response to the concerns of the people.",
+    },
+    {
+      icon: <FaGraduationCap className="text-4xl text-green-700" />,
+      title: "Values-Based Governance",
+      description:
+        "Our actions will be guided by principles of honesty, compassion, justice, and accountability—reflecting a deep respect for ethical standards and Godly values in leadership.",
+    },
+    {
+      icon: <FaHospitalUser className="text-4xl text-green-700" />,
+      title: "Effective Communication and People Engagement",
+      description:
+        "We will maintain clear, consistent, and transparent communication—leveraging both traditional and digital platforms to keep the people informed, involved, and connected.",
+    },
+    {
+      icon: <FaLeaf className="text-4xl text-green-700" />,
+      title: "Grassroots Connection and Empowerment",
+      description:
+        "We will deepen our presence at the grassroots by actively engaging communities, supporting local initiatives, and ensuring that development starts from the people and reaches every level.",
     },
   ];
 
@@ -108,8 +90,10 @@ const Vision = () => {
             transition={{ delay: 0.3 }}
             className="text-xl text-gray-600"
           >
-            A comprehensive blueprint for a prosperous, inclusive, and
-            sustainable Oyo State
+            To inspire a new era of leadership rooted in service, guided by
+            integrity and Godly values, and committed to building a united,
+            people-focused society where every citizen is heard, valued, and
+            empowered.
           </motion.p>
         </div>
 
@@ -131,7 +115,7 @@ const Vision = () => {
                   {pillar.description}
                 </p>
                 <div className="border-t pt-4 mt-2">
-                  <h4 className="font-semibold text-green-700 mb-2">
+                  {/* <h4 className="font-semibold text-green-700 mb-2">
                     Key Goals:
                   </h4>
                   <ul className="space-y-2">
@@ -144,7 +128,7 @@ const Vision = () => {
                         {goal}
                       </li>
                     ))}
-                  </ul>
+                  </ul> */}
                 </div>
               </div>
             </motion.div>
