@@ -102,12 +102,14 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold mb-4">Contact Info</h3>
             <ul className="space-y-3">
-              <li className="text-gray-400">info@akeemagbaje.com</li>
-              <li className="text-gray-400">+234 802 345 6789</li>
+              <li className="text-gray-400">agbajeadehun27@gmail.com</li>
               <li className="text-gray-400">
-                23, Agodi GRA, Ibadan,
+                +234 916 061 0199, +234 803 657 8256
+              </li>
+              <li className="text-gray-400">
+                Adehun Building, Bodija,
                 <br />
-                Oyo State, Nigeria
+                Ibadan, Oyo State, Nigeria
               </li>
             </ul>
           </div>
