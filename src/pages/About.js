@@ -102,13 +102,6 @@ const About = () => {
                 understanding that unity within the structure is essential for
                 electoral success and effective governance.
               </p>
-              <h2>Our Commitment</h2>
-              <p>
-                Adehun is committed to fostering a system where leadership is
-                responsible, inclusive, and results-driven—ensuring that
-                political success translates into tangible benefits for the
-                people.
-              </p>
               <h2>Closing</h2>
               <p>
                 Adehun is not just a movement—it is a structured pathway toward
