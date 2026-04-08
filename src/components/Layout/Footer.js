@@ -17,7 +17,7 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/share/g/18PZCKEs4S/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors"
@@ -25,7 +25,7 @@ const Footer = () => {
                 f
               </a>
               <a
-                href="https://twitter.com"
+                href="https://www.tiktok.com/@adehun27?_r=1&_t=ZS-95N4TY9lG7B"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors"
@@ -33,7 +33,15 @@ const Footer = () => {
                 t
               </a>
               <a
-                href="https://instagram.com"
+                href="https://whatsapp.com/channel/0029VbBe8101CYoW9cAtVb2n"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                w
+              </a>
+              <a
+                href="https://www.instagram.com/akeemadedejiagbaje?utm_source=qr&igsh=ZjJ5c3p0dnRoMTd2"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors"
