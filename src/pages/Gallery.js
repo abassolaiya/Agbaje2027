@@ -1,13 +1,122 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { motion } from "framer-motion";
-import { FaPlay } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
+
+// Import all images from 1.jpeg to 11.jpeg
+import img1 from "../images/1.jpeg";
+import img2 from "../images/2.jpeg";
+import img3 from "../images/3.jpeg";
+import img4 from "../images/4.jpeg";
+import img5 from "../images/5.jpeg";
+import img6 from "../images/6.jpeg";
+import img7 from "../images/7.jpeg";
+import img8 from "../images/8.jpeg";
+import img9 from "../images/9.jpeg";
+import img10 from "../images/10.jpeg";
+import img11 from "../images/11.jpeg";
+import aboutImg from "../images/about.jpeg";
+import agbajeImg from "../images/agbaje.png";
 
 const Gallery = () => {
-  const [images, setImages] = useState([]);
+  const [currentBackgroundImages, setCurrentBackgroundImages] = useState([]);
+  const [fadeIn, setFadeIn] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedImage, setSelectedImage] = useState(null);
-  const [loading, setLoading] = useState(true);
+
+  // Use local images as temporary gallery
+  const galleryImages = [
+    {
+      id: 1,
+      imageUrl: img1,
+      title: "Campaign Rally",
+      category: "campaign",
+      description: "Massive turnout at our campaign rally",
+    },
+    {
+      id: 2,
+      imageUrl: img2,
+      title: "Community Meeting",
+      category: "meetings",
+      description: "Engaging with community leaders",
+    },
+    {
+      id: 3,
+      imageUrl: img3,
+      title: "Youth Summit",
+      category: "events",
+      description: "Empowering the youth",
+    },
+    {
+      id: 4,
+      imageUrl: img4,
+      title: "Town Hall",
+      category: "meetings",
+      description: "Listening to the people's voice",
+    },
+    {
+      id: 5,
+      imageUrl: img5,
+      title: "Market Visit",
+      category: "campaign",
+      description: "Connecting with traders",
+    },
+    {
+      id: 6,
+      imageUrl: img6,
+      title: "Leadership Conference",
+      category: "events",
+      description: "Vision 2026",
+    },
+    {
+      id: 7,
+      imageUrl: img7,
+      title: "Community Development",
+      category: "community",
+      description: "Building together",
+    },
+    {
+      id: 8,
+      imageUrl: img8,
+      title: "Women's Gathering",
+      category: "community",
+      description: "Women for change",
+    },
+    {
+      id: 9,
+      imageUrl: img9,
+      title: "Press Conference",
+      category: "events",
+      description: "Addressing the media",
+    },
+    {
+      id: 10,
+      imageUrl: img10,
+      title: "Door-to-Door Campaign",
+      category: "campaign",
+      description: "Reaching every household",
+    },
+    {
+      id: 11,
+      imageUrl: img11,
+      title: "Strategy Meeting",
+      category: "meetings",
+      description: "Planning the way forward",
+    },
+    {
+      id: 12,
+      imageUrl: aboutImg,
+      title: "About Adehun",
+      category: "campaign",
+      description: "The movement for change",
+    },
+    {
+      id: 13,
+      imageUrl: agbajeImg,
+      title: "Leadership",
+      category: "campaign",
+      description: "Our great leader",
+    },
+  ];
 
   const categories = [
     { id: "all", name: "All" },
@@ -17,128 +126,218 @@ const Gallery = () => {
     { id: "community", name: "Community" },
   ];
 
-  useEffect(() => {
-    fetchImages();
-  }, []);
+  // Background image paths for scattering effect
+  const backgroundImagePaths = [
+    img1,
+    img2,
+    img3,
+    img4,
+    img5,
+    img6,
+    img7,
+    img8,
+    img9,
+    img10,
+    img11,
+    aboutImg,
+    agbajeImg,
+  ];
 
-  const fetchImages = async () => {
-    try {
-      const response = await axios.get("/api/gallery");
-      setImages(response.data.data);
-    } catch (error) {
-      console.error("Error fetching images:", error);
-    } finally {
-      setLoading(false);
+  // Function to select random images for background
+  const selectRandomBackgroundImages = () => {
+    const shuffled = [...backgroundImagePaths];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
+    return shuffled.slice(0, 8).map((path, index) => ({
+      id: index,
+      path: path,
+      position: {
+        top: Math.random() * 100,
+        left: Math.random() * 100,
+        size: 150 + Math.random() * 200,
+        opacity: 0.1 + Math.random() * 0.15,
+        rotation: -15 + Math.random() * 30,
+      },
+    }));
   };
+
+  // Setup background image rotation
+  useEffect(() => {
+    setCurrentBackgroundImages(selectRandomBackgroundImages());
+
+    const interval = setInterval(() => {
+      setFadeIn(false);
+      setTimeout(() => {
+        setCurrentBackgroundImages(selectRandomBackgroundImages());
+        setFadeIn(true);
+      }, 500);
+    }, 8000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const filteredImages =
     selectedCategory === "all"
-      ? images
-      : images.filter((img) => img.category === selectedCategory);
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-700"></div>
-      </div>
-    );
-  }
+      ? galleryImages
+      : galleryImages.filter((img) => img.category === selectedCategory);
 
   return (
-    <div className="pt-24 pb-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">
-            Campaign Gallery
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Moments from our journey to transform Oyo State
-          </p>
-        </div>
+    <>
+      {/* Background Images Container - positioned behind everything */}
+      <div className="fixed inset-0 overflow-hidden -z-10">
+        {currentBackgroundImages.map((image) => (
+          <div
+            key={image.id}
+            className={`absolute transition-all duration-1000 ${
+              fadeIn ? "opacity-100 scale-100" : "opacity-0 scale-95"
+            }`}
+            style={{
+              top: `${image.position.top}%`,
+              left: `${image.position.left}%`,
+              transform: `translate(-50%, -50%) rotate(${image.position.rotation}deg)`,
+              opacity: image.position.opacity,
+            }}
+          >
+            <img
+              src={image.path}
+              alt="Background scenery"
+              className="object-cover rounded-2xl shadow-2xl"
+              style={{
+                width: `${image.position.size}px`,
+                height: `${image.position.size}px`,
+              }}
+            />
+          </div>
+        ))}
+      </div>
 
-        {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => setSelectedCategory(category.id)}
-              className={`px-6 py-2 rounded-full font-semibold transition-colors ${
-                selectedCategory === category.id
-                  ? "bg-green-700 text-white"
-                  : "bg-white text-gray-700 hover:bg-gray-100"
-              }`}
-            >
-              {category.name}
-            </button>
-          ))}
-        </div>
+      {/* White Transparent Overlay - only behind content area */}
+      <div className="fixed inset-0 bg-white opacity-85 backdrop-blur-sm -z-10" />
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredImages.map((image, index) => (
-            <motion.div
-              key={image._id}
+      {/* Content */}
+      <div className="relative pt-24 pb-20 min-h-screen">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="group relative overflow-hidden rounded-lg shadow-lg cursor-pointer"
-              onClick={() => setSelectedImage(image)}
+              className="text-4xl md:text-5xl font-bold text-gray-800 mb-4"
             >
-              <img
-                src={image.imageUrl}
-                alt={image.title}
-                className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center">
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <button className="bg-white text-green-700 px-4 py-2 rounded-full font-semibold">
-                    View
+              Campaign Gallery
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-xl text-gray-600 max-w-2xl mx-auto"
+            >
+              Moments from our journey to transform Oyo State
+            </motion.p>
+          </div>
+
+          {/* Category Filter */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex flex-wrap justify-center gap-3 mb-12"
+          >
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => setSelectedCategory(category.id)}
+                className={`px-6 py-2 rounded-full font-semibold transition-all transform hover:scale-105 ${
+                  selectedCategory === category.id
+                    ? "bg-green-700 text-white shadow-lg"
+                    : "bg-white text-gray-700 hover:bg-gray-100 shadow-md"
+                }`}
+              >
+                {category.name}
+              </button>
+            ))}
+          </motion.div>
+
+          {/* Gallery Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredImages.map((image, index) => (
+              <motion.div
+                key={image.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                className="group relative overflow-hidden rounded-xl shadow-xl cursor-pointer bg-white"
+                onClick={() => setSelectedImage(image)}
+              >
+                <img
+                  src={image.imageUrl}
+                  alt={image.title}
+                  className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                  <button className="bg-white text-green-700 px-6 py-2 rounded-full font-semibold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-lg hover:bg-green-700 hover:text-white">
+                    View Details
                   </button>
                 </div>
-              </div>
-              {image.title && (
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                  <p className="text-white font-semibold">{image.title}</p>
-                </div>
-              )}
-            </motion.div>
-          ))}
-        </div>
+                {image.title && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <p className="text-white font-semibold text-lg">
+                      {image.title}
+                    </p>
+                    <p className="text-gray-200 text-sm mt-1">
+                      {image.category}
+                    </p>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
 
-        {/* Lightbox Modal */}
-        {selectedImage && (
-          <div
-            className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+          {/* No Images Message */}
+          {filteredImages.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-600 text-lg">
+                No images in this category yet.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Lightbox Modal */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button
+            className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10 transition-transform hover:scale-110"
             onClick={() => setSelectedImage(null)}
           >
-            <div className="relative max-w-5xl w-full">
-              <button
-                className="absolute top-4 right-4 text-white text-3xl hover:text-gray-300 z-10"
-                onClick={() => setSelectedImage(null)}
-              >
-                ×
-              </button>
-              <img
-                src={selectedImage.imageUrl}
-                alt={selectedImage.title}
-                className="w-full h-auto max-h-screen object-contain"
-              />
-              {selectedImage.title && (
-                <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
-                  <h3 className="text-xl font-semibold">
-                    {selectedImage.title}
-                  </h3>
-                  {selectedImage.description && (
-                    <p className="mt-2">{selectedImage.description}</p>
-                  )}
-                </div>
-              )}
-            </div>
+            <FaTimes />
+          </button>
+          <div className="relative max-w-6xl w-full mx-auto">
+            <img
+              src={selectedImage.imageUrl}
+              alt={selectedImage.title}
+              className="w-full h-auto max-h-[85vh] object-contain rounded-lg"
+            />
+            {(selectedImage.title || selectedImage.description) && (
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent text-white p-6 rounded-b-lg">
+                <h3 className="text-2xl font-semibold mb-2">
+                  {selectedImage.title}
+                </h3>
+                <p className="text-gray-200">{selectedImage.description}</p>
+                <p className="text-green-400 text-sm mt-2 capitalize">
+                  Category: {selectedImage.category}
+                </p>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 };
 

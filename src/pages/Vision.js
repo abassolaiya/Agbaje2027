@@ -8,8 +8,14 @@ import {
   FaLeaf,
   FaBriefcase,
 } from "react-icons/fa";
+import {
+  useBackgroundImages,
+  BackgroundOverlay,
+} from "../hooks/useBackgroundImages";
 
 const Vision = () => {
+  const { currentImages, fadeIn } = useBackgroundImages();
+
   const pillars = [
     {
       icon: <FaGraduationCap className="text-4xl text-green-700" />,
@@ -68,95 +74,83 @@ const Vision = () => {
   ];
 
   return (
-    <div className="pt-24 pb-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-bold text-gray-800 mb-4"
-          >
-            Vision & Agenda
-          </motion.h1>
+    <>
+      <BackgroundOverlay currentImages={currentImages} fadeIn={fadeIn} />
+
+      <div className="relative pt-24 pb-20 min-h-screen">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-4xl md:text-5xl font-bold text-gray-800 mb-4"
+            >
+              Vision & Agenda
+            </motion.h1>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="w-20 h-1 bg-green-700 mx-auto mb-6"
+            />
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-xl text-gray-600"
+            >
+              To inspire a new era of leadership rooted in service, guided by
+              integrity and Godly values, and committed to building a united,
+              people-focused society where every citizen is heard, valued, and
+              empowered.
+            </motion.p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {pillars.map((pillar, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+              >
+                <div className="p-6">
+                  <div className="flex justify-center mb-4">{pillar.icon}</div>
+                  <h3 className="text-2xl font-bold text-gray-800 text-center mb-3">
+                    {pillar.title}
+                  </h3>
+                  <p className="text-gray-600 text-center">
+                    {pillar.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="w-20 h-1 bg-green-700 mx-auto mb-6"
-          />
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="text-xl text-gray-600"
+            transition={{ delay: 0.8 }}
+            className="mt-16 bg-green-700 rounded-lg shadow-xl p-8 text-white text-center"
           >
-            To inspire a new era of leadership rooted in service, guided by
-            integrity and Godly values, and committed to building a united,
-            people-focused society where every citizen is heard, valued, and
-            empowered.
-          </motion.p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {pillars.map((pillar, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+            <h2 className="text-3xl font-bold mb-4">
+              Join Us in Building a Greater Oyo State
+            </h2>
+            <p className="text-xl mb-6">
+              Your support can help turn this vision into reality. Together, we
+              can make Oyo State a model of excellence.
+            </p>
+            <a
+              href="/volunteer"
+              className="inline-block bg-yellow-500 text-green-900 px-8 py-3 rounded-full font-semibold hover:bg-yellow-400 transition-colors"
             >
-              <div className="p-6">
-                <div className="flex justify-center mb-4">{pillar.icon}</div>
-                <h3 className="text-2xl font-bold text-gray-800 text-center mb-3">
-                  {pillar.title}
-                </h3>
-                <p className="text-gray-600 text-center mb-4">
-                  {pillar.description}
-                </p>
-                <div className="border-t pt-4 mt-2">
-                  {/* <h4 className="font-semibold text-green-700 mb-2">
-                    Key Goals:
-                  </h4>
-                  <ul className="space-y-2">
-                    {pillar.goals.map((goal, idx) => (
-                      <li
-                        key={idx}
-                        className="text-gray-600 text-sm flex items-start"
-                      >
-                        <span className="text-green-700 mr-2">✓</span>
-                        {goal}
-                      </li>
-                    ))}
-                  </ul> */}
-                </div>
-              </div>
-            </motion.div>
-          ))}
+              Volunteer Today
+            </a>
+          </motion.div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="mt-16 bg-green-700 rounded-lg shadow-xl p-8 text-white text-center"
-        >
-          <h2 className="text-3xl font-bold mb-4">
-            Join Us in Building a Greater Oyo State
-          </h2>
-          <p className="text-xl mb-6">
-            Your support can help turn this vision into reality. Together, we
-            can make Oyo State a model of excellence.
-          </p>
-          <a
-            href="/volunteer"
-            className="inline-block bg-yellow-500 text-green-900 px-8 py-3 rounded-full font-semibold hover:bg-yellow-400 transition-colors"
-          >
-            Volunteer Today
-          </a>
-        </motion.div>
       </div>
-    </div>
+    </>
   );
 };
 

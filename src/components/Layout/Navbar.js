@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import logo from "../../images/logo.jpeg";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,8 +37,12 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-              <span className="text-2xl font-bold text-green-700">AA</span>
+            <div className="w-12 h-12 rounded-full overflow-hidden bg-white flex items-center justify-center">
+              <img
+                src={logo}
+                alt="Adehun Logo"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div>
               <h1
