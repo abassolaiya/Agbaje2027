@@ -77,7 +77,8 @@ const About = () => {
                   decision reflects both the will of the people and a deep sense
                   of moral responsibility.
                 </p>
-                <h2>Our Approach</h2>
+                <br />
+                <h2>OUR APPROACH</h2>
                 <p>
                   Our approach is rooted in service to the people, guided by the
                   passion and steadfast commitment of Barrister Akeem Agbaje to
@@ -89,9 +90,10 @@ const About = () => {
                   to the people, but to the values of integrity and
                   accountability before God.
                 </p>
+                <br />
                 <h2>
-                  Driven by these principles, we adopt a people-first approach
-                  that prioritizes:
+                  DRIVEN BY THE PRINCIPLES, WE ADOPT A PEOPLE-FIRST APPROACH
+                  THAT PRIORITIZES:
                 </h2>
                 <p>
                   Active engagement with communities at all levels Inclusive
@@ -110,7 +112,8 @@ const About = () => {
                   clear understanding that unity within the structure is
                   essential for electoral success and effective governance.
                 </p>
-                <h2>Closing</h2>
+                <br />
+                <h2>CLOSING</h2>
                 <p>
                   Adehun is not just a movement—it is a structured pathway
                   toward a more unified, credible, and people-oriented political

@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock } from "react-icons/fa";
+import {
+  FaPhone,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaClock,
+  FaWhatsapp,
+} from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
 import {
@@ -38,16 +44,50 @@ const Contact = () => {
     }
   };
 
+  // Function to handle WhatsApp click
+  const handleWhatsAppClick = (phoneNumber) => {
+    // Remove any non-digit characters from the phone number
+    const cleanNumber = phoneNumber.replace(/\D/g, "");
+
+    // Create WhatsApp URL
+    // For Nigerian numbers, ensure it has country code (234)
+    let whatsappNumber = cleanNumber;
+    if (cleanNumber.startsWith("0")) {
+      // Convert local format (0XXX...) to international format (234XXX...)
+      whatsappNumber = "234" + cleanNumber.substring(1);
+    } else if (!cleanNumber.startsWith("234") && cleanNumber.length === 10) {
+      // If it's 10 digits without country code
+      whatsappNumber = "234" + cleanNumber;
+    }
+
+    // Open WhatsApp with a default message
+    const message = encodeURIComponent(
+      "Hello, I'm interested in your campaign services. I'd like to get more information.",
+    );
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+
+    // Open in new tab
+    window.open(whatsappUrl, "_blank");
+  };
+
+  // Function to handle regular phone call
+  const handlePhoneCall = (phoneNumber) => {
+    const cleanNumber = phoneNumber.replace(/\D/g, "");
+    window.location.href = `tel:${cleanNumber}`;
+  };
+
   const contactInfo = [
     {
       icon: <FaPhone className="text-2xl text-green-700" />,
       title: "Phone",
       details: ["+234 916 061 0199", "+234 803 657 8256"],
+      showWhatsApp: true, // Add WhatsApp option
     },
     {
       icon: <FaEnvelope className="text-2xl text-green-700" />,
       title: "Email",
       details: ["info@akeemagbaje.com", "agbajeadehun27@gmail.com"],
+      isEmail: true, // Mark as email for mailto links
     },
     {
       icon: <FaMapMarkerAlt className="text-2xl text-green-700" />,
@@ -96,7 +136,6 @@ const Contact = () => {
                 Send Us a Message
               </h2>
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Form fields remain the same */}
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">
                     Full Name *
@@ -187,15 +226,58 @@ const Contact = () => {
                   className="bg-white rounded-lg shadow-lg p-6 flex items-start space-x-4"
                 >
                   <div className="flex-shrink-0">{info.icon}</div>
-                  <div>
+                  <div className="flex-1">
                     <h3 className="text-xl font-bold text-gray-800 mb-2">
                       {info.title}
                     </h3>
-                    {info.details.map((detail, idx) => (
-                      <p key={idx} className="text-gray-600">
-                        {detail}
-                      </p>
-                    ))}
+                    {info.details.map((detail, idx) => {
+                      // Handle phone numbers with WhatsApp
+                      if (info.showWhatsApp && detail.match(/[\d\s\+]+/)) {
+                        const cleanPhone = detail.replace(/\s/g, "");
+                        return (
+                          <div
+                            key={idx}
+                            className="flex items-center space-x-3 mb-2"
+                          >
+                            <p className="text-gray-600">{detail}</p>
+                            <div className="flex space-x-2">
+                              <button
+                                onClick={() => handlePhoneCall(detail)}
+                                className="text-green-600 hover:text-green-700 transition-colors p-1"
+                                title="Call now"
+                              >
+                                <FaPhone className="text-sm" />
+                              </button>
+                              <button
+                                onClick={() => handleWhatsAppClick(detail)}
+                                className="text-green-600 hover:text-green-700 transition-colors p-1"
+                                title="Message on WhatsApp"
+                              >
+                                <FaWhatsapp className="text-sm" />
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      }
+                      // Handle email addresses
+                      else if (info.isEmail) {
+                        return (
+                          <a
+                            key={idx}
+                            href={`mailto:${detail}`}
+                            className="text-gray-600 hover:text-green-700 transition-colors block mb-1"
+                          >
+                            {detail}
+                          </a>
+                        );
+                      }
+                      // Regular text
+                      return (
+                        <p key={idx} className="text-gray-600">
+                          {detail}
+                        </p>
+                      );
+                    })}
                   </div>
                 </div>
               ))}
