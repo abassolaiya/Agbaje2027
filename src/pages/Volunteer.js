@@ -20,7 +20,7 @@ const Volunteer = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await axios.post("/api/volunteers/register", data);
+      await axios.post("/volunteers/register", data);
       toast.success("Thank you for joining! We will contact you soon.");
       reset();
     } catch (error) {

@@ -34,7 +34,7 @@ const Contact = () => {
     setLoading(true);
 
     try {
-      await axios.post("/api/contact", formData);
+      await axios.post("/contact", formData);
       toast.success("Message sent successfully! We will get back to you soon.");
       setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
     } catch (error) {

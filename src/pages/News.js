@@ -215,12 +215,12 @@ const News = () => {
             <p className="text-xl text-gray-600">
               Stay informed about our campaign progress and activities
             </p>
-            {usePlaceholderData && (
+            {/* {usePlaceholderData && (
               <div className="mt-4 inline-block bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg text-sm">
                 ℹ️ Showing placeholder content. Connect to backend for live
                 updates.
               </div>
-            )}
+            )} */}
           </div>
 
           {/* Category Filter */}

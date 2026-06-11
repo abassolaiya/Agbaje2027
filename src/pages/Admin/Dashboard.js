@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Link, useLocation } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Link,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import {
   FaUsers,
   FaNewspaper,
@@ -8,15 +14,59 @@ import {
   FaCalendarAlt,
   FaChartLine,
 } from "react-icons/fa";
+import axios from "axios";
+
 import VolunteerManagement from "./VolunteerManagement";
 import NewsManagement from "./NewsManagement";
 import GalleryManagement from "./GalleryManagement";
 import MessagesManagement from "./MessagesManagement";
 import EventsManagement from "./EventsManagement";
+import UserManagement from "./UserManagement";
 
 const AdminDashboard = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [userRole, setUserRole] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/admin/login");
+        return;
+      }
+
+      try {
+        const res = await axios.get("/auth/me");
+        setUserRole(res.data.data.role);
+      } catch (error) {
+        console.error("Auth error:", error.response?.status, error.message);
+        // Only redirect if token is invalid (401)
+        if (error.response?.status === 401) {
+          localStorage.removeItem("token");
+          delete axios.defaults.headers.common["Authorization"];
+          navigate("/admin/login");
+        } else {
+          // Network or server error – assume viewer role to keep dashboard accessible
+          setUserRole("viewer");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [navigate]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-700"></div>
+      </div>
+    );
+  }
 
   const menuItems = [
     { path: "/admin/volunteers", name: "Volunteers", icon: <FaUsers /> },
@@ -24,8 +74,12 @@ const AdminDashboard = () => {
     { path: "/admin/gallery", name: "Gallery", icon: <FaImages /> },
     { path: "/admin/messages", name: "Messages", icon: <FaEnvelope /> },
     { path: "/admin/events", name: "Events", icon: <FaCalendarAlt /> },
-    { path: "/admin/analytics", name: "Analytics", icon: <FaChartLine /> },
+    // { path: "/admin/analytics", name: "Analytics", icon: <FaChartLine /> },
   ];
+
+  if (userRole === "admin") {
+    menuItems.push({ path: "/admin/users", name: "Users", icon: <FaUsers /> });
+  }
 
   return (
     <div className="flex h-screen pt-16">
@@ -40,7 +94,6 @@ const AdminDashboard = () => {
           >
             {sidebarOpen ? "← Collapse" : "→"}
           </button>
-
           <nav className="space-y-2">
             {menuItems.map((item) => (
               <Link
@@ -69,6 +122,7 @@ const AdminDashboard = () => {
             <Route path="gallery" element={<GalleryManagement />} />
             <Route path="messages" element={<MessagesManagement />} />
             <Route path="events" element={<EventsManagement />} />
+            <Route path="users" element={<UserManagement />} />
             <Route path="analytics" element={<div>Analytics Dashboard</div>} />
             <Route path="/" element={<VolunteerManagement />} />
           </Routes>

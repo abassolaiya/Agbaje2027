@@ -23,7 +23,7 @@ const NewsManagement = () => {
   const fetchNews = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("/api/news", {
+      const response = await axios.get("/news", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setNews(response.data.data);
@@ -40,12 +40,12 @@ const NewsManagement = () => {
     try {
       const token = localStorage.getItem("token");
       if (editing) {
-        await axios.put(`/api/news/${editing}`, formData, {
+        await axios.put(`/news/${editing}`, formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
         toast.success("News updated successfully");
       } else {
-        await axios.post("/api/news", formData, {
+        await axios.post("/news", formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
         toast.success("News created successfully");
@@ -70,7 +70,7 @@ const NewsManagement = () => {
     if (window.confirm("Are you sure you want to delete this news article?")) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`/api/news/${id}`, {
+        await axios.delete(`/news/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         toast.success("News deleted successfully");
@@ -85,7 +85,7 @@ const NewsManagement = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.patch(
-        `/api/news/${id}/publish`,
+        `/news/${id}/publish`,
         { published: !published },
         {
           headers: { Authorization: `Bearer ${token}` },

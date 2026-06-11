@@ -20,7 +20,7 @@ const GalleryManagement = () => {
   const fetchImages = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("/api/gallery", {
+      const response = await axios.get("/gallery", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setImages(response.data.data);
@@ -52,7 +52,7 @@ const GalleryManagement = () => {
     setUploading(true);
     try {
       const token = localStorage.getItem("token");
-      await axios.post("/api/gallery", uploadData, {
+      await axios.post("/gallery", uploadData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -73,7 +73,7 @@ const GalleryManagement = () => {
     if (window.confirm("Are you sure you want to delete this image?")) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`/api/gallery/${id}`, {
+        await axios.delete(`/gallery/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         toast.success("Image deleted successfully");
@@ -88,7 +88,7 @@ const GalleryManagement = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.patch(
-        `/api/gallery/${id}/featured`,
+        `/gallery/${id}/featured`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },

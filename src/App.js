@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -17,10 +17,26 @@ import Volunteer from "./pages/Volunteer";
 import News from "./pages/News";
 import Contact from "./pages/Contact";
 import AdminDashboard from "./pages/Admin/Dashboard";
+import AdminLogin from "./pages/Admin/Login";
 
 // Configure axios base URL
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+const API_URL =
+  process.env.REACT_APP_API_URL || "https://adehunbackend.onrender.com/api";
 axios.defaults.baseURL = API_URL;
+
+const token = localStorage.getItem("token");
+if (token) {
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+}
+
+// Protected route wrapper
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return <Navigate to="/admin/login" replace />;
+  }
+  return children;
+};
 
 function App() {
   return (
@@ -28,6 +44,7 @@ function App() {
       <Navbar />
       <main className="flex-grow">
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/vision" element={<Vision />} />
@@ -35,7 +52,17 @@ function App() {
           <Route path="/volunteer" element={<Volunteer />} />
           <Route path="/news" element={<News />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/admin/*" element={<AdminDashboard />} />
+          <Route path="admin/login" element={<AdminLogin />} />
+
+          {/* Protected admin area - AdminDashboard handles its own nested routes */}
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
       <Footer />

@@ -25,7 +25,7 @@ const EventsManagement = () => {
   const fetchEvents = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("/api/events", {
+      const response = await axios.get("/events", {
         headers: { Authorization: `Bearer ${token}` },
         params: { upcoming: "false" },
       });
@@ -43,12 +43,12 @@ const EventsManagement = () => {
     try {
       const token = localStorage.getItem("token");
       if (editing) {
-        await axios.put(`/api/events/${editing}`, formData, {
+        await axios.put(`/events/${editing}`, formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
         toast.success("Event updated successfully");
       } else {
-        await axios.post("/api/events", formData, {
+        await axios.post("/events", formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
         toast.success("Event created successfully");
@@ -75,7 +75,7 @@ const EventsManagement = () => {
     if (window.confirm("Are you sure you want to delete this event?")) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`/api/events/${id}`, {
+        await axios.delete(`/events/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         toast.success("Event deleted successfully");

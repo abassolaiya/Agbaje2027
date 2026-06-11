@@ -15,7 +15,7 @@ const VolunteerManagement = () => {
   const fetchVolunteers = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("/api/volunteers", {
+      const response = await axios.get("/volunteers", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setVolunteers(response.data.data);

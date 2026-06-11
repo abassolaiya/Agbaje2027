@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* About Section */}
+          {/* About Section (unchanged) */}
           <div>
             <h3 className="text-xl font-bold mb-4">Adehun 2027</h3>
             <p className="text-gray-400 mb-4">
@@ -51,7 +51,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Quick Links (added Admin Login) */}
           <div>
             <h3 className="text-xl font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2">
@@ -103,10 +103,19 @@ const Footer = () => {
                   Contact
                 </Link>
               </li>
+              {/* New Admin Login link */}
+              <li>
+                <Link
+                  to="/admin/login"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Admin Login
+                </Link>
+              </li>
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Contact Info (unchanged) */}
           <div>
             <h3 className="text-xl font-bold mb-4">Contact Info</h3>
             <ul className="space-y-3">
@@ -122,7 +131,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Newsletter */}
+          {/* Newsletter (unchanged) */}
           <div>
             <h3 className="text-xl font-bold mb-4">Stay Updated</h3>
             <p className="text-gray-400 mb-4">
@@ -141,7 +150,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
+        {/* Bottom Bar (unchanged) */}
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400">
             &copy; {currentYear} Barr. Akeem Agbaje Campaign. All rights

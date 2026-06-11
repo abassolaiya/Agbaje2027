@@ -18,7 +18,7 @@ const MessagesManagement = () => {
   const fetchMessages = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("/api/contact", {
+      const response = await axios.get("/contact", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMessages(response.data.data);
@@ -33,7 +33,7 @@ const MessagesManagement = () => {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("/api/contact/stats", {
+      const response = await axios.get("/contact/stats", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setStats(response.data.data);
@@ -48,7 +48,7 @@ const MessagesManagement = () => {
       try {
         const token = localStorage.getItem("token");
         await axios.put(
-          `/api/contact/${message._id}`,
+          `/contact/${message._id}`,
           { status: "read" },
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -70,7 +70,7 @@ const MessagesManagement = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `/api/contact/${selectedMessage._id}`,
+        `/contact/${selectedMessage._id}`,
         {
           status: "replied",
           reply: replyText,
@@ -92,7 +92,7 @@ const MessagesManagement = () => {
     if (window.confirm("Are you sure you want to delete this message?")) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`/api/contact/${id}`, {
+        await axios.delete(`/contact/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         toast.success("Message deleted");
