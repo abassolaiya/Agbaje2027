@@ -18,6 +18,7 @@ import News from "./pages/News";
 import Contact from "./pages/Contact";
 import AdminDashboard from "./pages/Admin/Dashboard";
 import AdminLogin from "./pages/Admin/Login";
+import NewsDetail from "./pages/NewsDetail";
 
 // Configure axios base URL
 const API_URL =
@@ -51,6 +52,7 @@ function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/volunteer" element={<Volunteer />} />
           <Route path="/news" element={<News />} />
+          <Route path="/news/:slug" element={<NewsDetail />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="admin/login" element={<AdminLogin />} />
 

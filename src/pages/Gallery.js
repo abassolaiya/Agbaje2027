@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
+import axios from "axios";
+import {
+  useBackgroundImages,
+  BackgroundOverlay,
+} from "../hooks/useBackgroundImages";
 
-// Import all images from 1.jpeg to 11.jpeg
+// These imports are now only used for the background scattering effect
 import img1 from "../images/1.jpeg";
 import img2 from "../images/2.jpeg";
 import img3 from "../images/3.jpeg";
@@ -18,105 +23,18 @@ import aboutImg from "../images/about.jpeg";
 import agbajeImg from "../images/agbaje.png";
 
 const Gallery = () => {
-  const [currentBackgroundImages, setCurrentBackgroundImages] = useState([]);
-  const [fadeIn, setFadeIn] = useState(true);
+  // State for fetched gallery images
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // UI state
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // Use local images as temporary gallery
-  const galleryImages = [
-    {
-      id: 1,
-      imageUrl: img1,
-      title: "Campaign Rally",
-      category: "campaign",
-      description: "Massive turnout at our campaign rally",
-    },
-    {
-      id: 2,
-      imageUrl: img2,
-      title: "Community Meeting",
-      category: "meetings",
-      description: "Engaging with community leaders",
-    },
-    {
-      id: 3,
-      imageUrl: img3,
-      title: "Youth Summit",
-      category: "events",
-      description: "Empowering the youth",
-    },
-    {
-      id: 4,
-      imageUrl: img4,
-      title: "Town Hall",
-      category: "meetings",
-      description: "Listening to the people's voice",
-    },
-    {
-      id: 5,
-      imageUrl: img5,
-      title: "Market Visit",
-      category: "campaign",
-      description: "Connecting with traders",
-    },
-    {
-      id: 6,
-      imageUrl: img6,
-      title: "Leadership Conference",
-      category: "events",
-      description: "Vision 2026",
-    },
-    {
-      id: 7,
-      imageUrl: img7,
-      title: "Community Development",
-      category: "community",
-      description: "Building together",
-    },
-    {
-      id: 8,
-      imageUrl: img8,
-      title: "Women's Gathering",
-      category: "community",
-      description: "Women for change",
-    },
-    {
-      id: 9,
-      imageUrl: img9,
-      title: "Press Conference",
-      category: "events",
-      description: "Addressing the media",
-    },
-    {
-      id: 10,
-      imageUrl: img10,
-      title: "Door-to-Door Campaign",
-      category: "campaign",
-      description: "Reaching every household",
-    },
-    {
-      id: 11,
-      imageUrl: img11,
-      title: "Strategy Meeting",
-      category: "meetings",
-      description: "Planning the way forward",
-    },
-    {
-      id: 12,
-      imageUrl: aboutImg,
-      title: "About Adehun",
-      category: "campaign",
-      description: "The movement for change",
-    },
-    {
-      id: 13,
-      imageUrl: agbajeImg,
-      title: "Leadership",
-      category: "campaign",
-      description: "Our great leader",
-    },
-  ];
+  // Background scattering effect (unchanged, uses local images)
+  const [currentBackgroundImages, setCurrentBackgroundImages] = useState([]);
+  const [fadeIn, setFadeIn] = useState(true);
 
   const categories = [
     { id: "all", name: "All" },
@@ -124,9 +42,10 @@ const Gallery = () => {
     { id: "events", name: "Events" },
     { id: "meetings", name: "Meetings" },
     { id: "community", name: "Community" },
+    { id: "personal", name: "Personal" },
   ];
 
-  // Background image paths for scattering effect
+  // Background image paths for scattering effect (still uses local imports)
   const backgroundImagePaths = [
     img1,
     img2,
@@ -143,7 +62,6 @@ const Gallery = () => {
     agbajeImg,
   ];
 
-  // Function to select random images for background
   const selectRandomBackgroundImages = () => {
     const shuffled = [...backgroundImagePaths];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -166,7 +84,6 @@ const Gallery = () => {
   // Setup background image rotation
   useEffect(() => {
     setCurrentBackgroundImages(selectRandomBackgroundImages());
-
     const interval = setInterval(() => {
       setFadeIn(false);
       setTimeout(() => {
@@ -174,14 +91,65 @@ const Gallery = () => {
         setFadeIn(true);
       }, 500);
     }, 8000);
-
     return () => clearInterval(interval);
   }, []);
+
+  // Fetch real gallery images from backend
+  useEffect(() => {
+    fetchGalleryImages();
+  }, []);
+
+  const fetchGalleryImages = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("/gallery"); // baseURL includes /api
+      if (response.data.success && response.data.data) {
+        // Map backend fields to the expected structure
+        const images = response.data.data.map((img) => ({
+          id: img._id,
+          imageUrl: img.imageUrl,
+          title: img.title || "Untitled",
+          category: img.category,
+          description: img.description || "",
+        }));
+        setGalleryImages(images);
+      } else {
+        setGalleryImages([]);
+      }
+    } catch (err) {
+      console.error("Error fetching gallery:", err);
+      setError("Failed to load gallery images.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredImages =
     selectedCategory === "all"
       ? galleryImages
       : galleryImages.filter((img) => img.category === selectedCategory);
+
+  if (loading) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-700"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="pt-32 text-center">
+        <p className="text-red-600">{error}</p>
+        <button
+          onClick={fetchGalleryImages}
+          className="mt-4 bg-green-700 text-white px-4 py-2 rounded"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -260,42 +228,41 @@ const Gallery = () => {
           </motion.div>
 
           {/* Gallery Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredImages.map((image, index) => (
-              <motion.div
-                key={image.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                className="group relative overflow-hidden rounded-xl shadow-xl cursor-pointer bg-white"
-                onClick={() => setSelectedImage(image)}
-              >
-                <img
-                  src={image.imageUrl}
-                  alt={image.title}
-                  className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
-                  <button className="bg-white text-green-700 px-6 py-2 rounded-full font-semibold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-lg hover:bg-green-700 hover:text-white">
-                    View Details
-                  </button>
-                </div>
-                {image.title && (
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                    <p className="text-white font-semibold text-lg">
-                      {image.title}
-                    </p>
-                    <p className="text-gray-200 text-sm mt-1">
-                      {image.category}
-                    </p>
+          {filteredImages.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredImages.map((image, index) => (
+                <motion.div
+                  key={image.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="group relative overflow-hidden rounded-xl shadow-xl cursor-pointer bg-white"
+                  onClick={() => setSelectedImage(image)}
+                >
+                  <img
+                    src={image.imageUrl}
+                    alt={image.title}
+                    className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                    <button className="bg-white text-green-700 px-6 py-2 rounded-full font-semibold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-lg hover:bg-green-700 hover:text-white">
+                      View Details
+                    </button>
                   </div>
-                )}
-              </motion.div>
-            ))}
-          </div>
-
-          {/* No Images Message */}
-          {filteredImages.length === 0 && (
+                  {image.title && (
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                      <p className="text-white font-semibold text-lg">
+                        {image.title}
+                      </p>
+                      <p className="text-gray-200 text-sm mt-1 capitalize">
+                        {image.category}
+                      </p>
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          ) : (
             <div className="text-center py-12">
               <p className="text-gray-600 text-lg">
                 No images in this category yet.

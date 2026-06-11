@@ -7,12 +7,13 @@ const NewsManagement = () => {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     content: "",
     excerpt: "",
     category: "news",
-    featuredImage: "",
     published: false,
   });
 
@@ -35,17 +36,39 @@ const NewsManagement = () => {
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    } else {
+      setImageFile(null);
+      setImagePreview("");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
+      const submitData = new FormData();
+      submitData.append("title", formData.title);
+      submitData.append("content", formData.content);
+      submitData.append("excerpt", formData.excerpt || "");
+      submitData.append("category", formData.category);
+      submitData.append("published", formData.published);
+      if (imageFile) {
+        submitData.append("image", imageFile);
+      }
+
+      let response;
       if (editing) {
-        await axios.put(`/news/${editing}`, formData, {
+        response = await axios.put(`/news/${editing}`, submitData, {
           headers: { Authorization: `Bearer ${token}` },
         });
         toast.success("News updated successfully");
       } else {
-        await axios.post("/news", formData, {
+        response = await axios.post("/news", submitData, {
           headers: { Authorization: `Bearer ${token}` },
         });
         toast.success("News created successfully");
@@ -57,12 +80,14 @@ const NewsManagement = () => {
         content: "",
         excerpt: "",
         category: "news",
-        featuredImage: "",
         published: false,
       });
+      setImageFile(null);
+      setImagePreview("");
       fetchNews();
     } catch (error) {
-      toast.error("Failed to save news");
+      console.error("Submit error:", error.response?.data || error.message);
+      toast.error(error.response?.data?.message || "Failed to save news");
     }
   };
 
@@ -98,6 +123,23 @@ const NewsManagement = () => {
     }
   };
 
+  // Pre-fill form when editing
+  const handleEdit = (article) => {
+    setEditing(article._id);
+    setFormData({
+      title: article.title,
+      content: article.content,
+      excerpt: article.excerpt || "",
+      category: article.category,
+      published: article.published,
+    });
+    if (article.imageUrl) {
+      setImagePreview(article.imageUrl);
+    }
+    setImageFile(null);
+    setShowForm(true);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -111,7 +153,21 @@ const NewsManagement = () => {
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800">News Management</h1>
         <button
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => {
+            setShowForm(!showForm);
+            if (!showForm) {
+              setEditing(null);
+              setFormData({
+                title: "",
+                content: "",
+                excerpt: "",
+                category: "news",
+                published: false,
+              });
+              setImageFile(null);
+              setImagePreview("");
+            }
+          }}
           className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800"
         >
           {showForm ? "Cancel" : "Create New Article"}
@@ -166,7 +222,7 @@ const NewsManagement = () => {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
                   Category
@@ -187,17 +243,23 @@ const NewsManagement = () => {
               </div>
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  Featured Image URL
+                  Featured Image
                 </label>
                 <input
-                  type="url"
-                  value={formData.featuredImage}
-                  onChange={(e) =>
-                    setFormData({ ...formData, featuredImage: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                  placeholder="https://example.com/image.jpg"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="w-full"
                 />
+                {imagePreview && (
+                  <div className="mt-2">
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="h-32 w-auto object-cover rounded border"
+                    />
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex items-center space-x-2">
@@ -279,11 +341,7 @@ const NewsManagement = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
                     <button
-                      onClick={() => {
-                        setEditing(article._id);
-                        setFormData(article);
-                        setShowForm(true);
-                      }}
+                      onClick={() => handleEdit(article)}
                       className="text-blue-600 hover:text-blue-900 mr-3"
                     >
                       Edit

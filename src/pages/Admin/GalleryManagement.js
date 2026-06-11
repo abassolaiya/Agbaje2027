@@ -55,7 +55,7 @@ const GalleryManagement = () => {
       await axios.post("/gallery", uploadData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
+          // DO NOT set Content-Type
         },
       });
       toast.success("Image uploaded successfully");
@@ -63,7 +63,8 @@ const GalleryManagement = () => {
       setSelectedFile(null);
       fetchImages();
     } catch (error) {
-      toast.error("Failed to upload image");
+      console.error("Upload error:", error.response?.data || error.message);
+      toast.error(error.response?.data?.message || "Failed to upload image");
     } finally {
       setUploading(false);
     }
